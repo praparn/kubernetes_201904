@@ -1,0 +1,7 @@
+Machine name		            			Roles:						IP Address: (Private)		IP Address: (Public)
+Training_DockerZerotoHero_StudentGX_1	    Master						10.0.1.4					18.136.212.121					
+Training_DockerZerotoHero_StudentGX_2       NodePort					10.0.1.50					3.0.102.127
+Training_DockerZerotoHero_StudentGX_3   	NodePort					10.0.1.89					54.169.139.189
+
+
+  kubeadm join 10.0.1.4:6443 --token louwnt.hbi4m3ce2e1r8u4j --discovery-token-ca-cert-hash sha256:99b6996c26555633a4db62d4cc500892b4e8edcc500a3006b756c8d63981e6b2
