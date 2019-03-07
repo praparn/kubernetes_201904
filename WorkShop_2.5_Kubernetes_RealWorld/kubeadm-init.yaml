@@ -17,12 +17,14 @@ nodeRegistration:
   taints:
   - effect: NoSchedule
     key: node-role.kubernetes.io/master
-kind: MasterConfiguration
-apiServerCertSANs:
-  - 1.1.1.1
 ---
 apiServer:
+  certSANs:
+  - 1.1.1.1
+  extraArgs:
+    authorization-mode: Node,RBAC
   timeoutForControlPlane: 4m0s
+
 apiVersion: kubeadm.k8s.io/v1beta1
 certificatesDir: /etc/kubernetes/pki
 clusterName: Kubernetes
