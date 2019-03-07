@@ -1,0 +1,46 @@
+apiVersion: kubeadm.k8s.io/v1beta1
+bootstrapTokens:
+- groups:
+  - system:bootstrappers:kubeadm:default-node-token
+  ttl: 24h0m0s
+  usages:
+  - signing
+  - authentication
+kind: InitConfiguration
+localAPIEndpoint:
+  bindPort: 6443
+nodeRegistration:
+  criSocket: /var/run/dockershim.sock
+  name: ip-10-0-1-197.ap-southeast-1.compute.internal
+  kubeletExtraArgs:
+    cloud-provider: aws
+  taints:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+---
+apiServer:
+  timeoutForControlPlane: 4m0s
+apiVersion: kubeadm.k8s.io/v1beta1
+certificatesDir: /etc/kubernetes/pki
+clusterName: TrainingAdvanceDockerwithK8STeacher
+controlPlaneEndpoint: ""
+controllerManager:
+  extraArgs:
+    cloud-provider: aws
+    configure-cloud-routes: "false"
+    address: 0.0.0.0
+dns:
+  type: CoreDNS
+etcd:
+  local:
+    dataDir: /var/lib/etcd
+imageRepository: k8s.gcr.io
+kind: ClusterConfiguration
+kubernetesVersion: v1.13.0
+networking:
+  dnsDomain: cluster.local
+  podSubnet: 192.168.0.0/16 
+  serviceSubnet: 10.96.0.0/12
+scheduler:
+  extraArgs:
+    address: 0.0.0.0
