@@ -22,7 +22,7 @@ apiServer:
   timeoutForControlPlane: 4m0s
 apiVersion: kubeadm.k8s.io/v1beta1
 certificatesDir: /etc/kubernetes/pki
-clusterName: TrainingAdvanceDockerwithK8STeacher
+clusterName: Kubernetes
 controlPlaneEndpoint: ""
 controllerManager:
   extraArgs:

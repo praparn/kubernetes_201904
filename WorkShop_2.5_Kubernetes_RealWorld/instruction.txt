@@ -11,10 +11,10 @@ Note: This instruction will start lab for kubernetes's cluster for real workshop
 
 ====================================================
 Lab Description: (Check you excel sheet)
-Machine name		            			Roles:						IP Address: (Private)		IP Address: (Public)
-Training_DockerZerotoHero_StudentGX_1	    Master						10.0.1.X					X.X.X.X					
-Training_DockerZerotoHero_StudentGX_2       NodePort					10.0.1.X					X.X.X.X
-Training_DockerZerotoHero_StudentGX_3   	NodePort					10.0.1.X					X.X.X.X
+Machine name		            			Roles:						IP Address: (Private)		IP Address: (Public)			Hostname
+Training_DockerZerotoHero_StudentGX_1	    Master						10.0.1.X					X.X.X.X							ip-10-0-1-X.ap-southeast-1.compute.internal
+Training_DockerZerotoHero_StudentGX_2       NodePort					10.0.1.X					X.X.X.X							ip-10-0-1-X.ap-southeast-1.compute.internal
+Training_DockerZerotoHero_StudentGX_3   	NodePort					10.0.1.X					X.X.X.X							ip-10-0-1-X.ap-southeast-1.compute.internal
 ===================================================
 0. Follow document pdf for access ssh (Windows/MACOS)
 
@@ -29,6 +29,18 @@ tmux new -s Lab
 
 	# Remark: For your co-worker please kindly ssh to target node and join session with command #
 		tmux attach-session -t Lab
+
+3. (all node) Check hostname for each node and record by command:
+	curl http://169.254.169.254/latest/meta-data/local-hostname
+
+4. (Master) Prepare configuration for initial kubernetes master
+	cd ~
+	sed -i -e 's/name: ip-10-0-1-197.ap-southeast-1.compute.internal/name: <hostname of master node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
+	sed -i -e 's/name: ip-10-0-1-197.ap-southeast-1.compute.internal/name: <hostname of master node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
+	sed -i -e 's/name: ip-10-0-1-197.ap-southeast-1.compute.internal/name: <hostname of master node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
+	sed -i -e 's/name: ip-10-0-1-197.ap-southeast-1.compute.internal/name: <hostname of master node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
+	sed -i -e 's/name: ip-10-0-1-197.ap-southeast-1.compute.internal/name: <hostname of master node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
+	sed -i -e 's/name: ip-10-0-1-197.ap-southeast-1.compute.internal/name: <hostname of master node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
 
 3. (Master) initial cluster by command:
 	sudo su -
