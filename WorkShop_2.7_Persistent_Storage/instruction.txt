@@ -46,10 +46,10 @@ df -kh
 Part 2: Integrate with Persistency Volume (PV),  and Persistency Volume Claim (PVC)
 ===================================================
 1. (Master) Check workshop on Cloud
-cd ~/kubernetes_20181124/WorkShop_2.7_Persistent_Storage/
+cd ~/kubernetes_201904/WorkShop_2.7_Persistent_Storage/
 
 2. (Master) Copy sourcecode to NFS/Create Storage Class/ Volume (PV/PVC)/Deployment by command:
-cp mainlite.py /mnt/nfs_share/ (In case run via github : curl https://raw.githubusercontent.com/praparn/kubernetes_20181124/master/WorkShop_2.7_Persistent_Storage/mainlite.py > /mnt/nfs_share/mainlite.py)
+cp mainlite.py /mnt/nfs_share/ (In case run via github : curl https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/mainlite.py > /mnt/nfs_share/mainlite.py)
 
 3. (Master) Edit file "nfs_pv.yml" and change ip address of NFS to <Private IP Address of master>:
 
@@ -61,15 +61,15 @@ kubectl get pv
 kubectl describe pv/nfs-share-pv
 
 5. (Master) Create PVC for Claim Storage by command: 
-kubectl create -f nfs_pvc.yml   (In case run via github : kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_20181124/master/WorkShop_2.7_Persistent_Storage/nfs_pvc.yml)
+kubectl create -f nfs_pvc.yml   (In case run via github : kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/nfs_pvc.yml)
 
 6. (Master) Check status of PVC by command:
 kubectl get pvc
 kubectl describe pvc/nfs-share-pvc
 
 7. (Master) Create Deployment and Persistency Volume Claim (PVC) by command:
-kubectl create -f nfs_webtest_deploy.yml    (In case run via github : kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_20181124/master/WorkShop_2.7_Persistent_Storage/nfs_webtest_deploy.yml)
-kubectl create -f nfs_webtest_svc.yml   (In case run via github : kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_20181124/master/WorkShop_2.7_Persistent_Storage/nfs_webtest_svc.yml)
+kubectl create -f nfs_webtest_deploy.yml    (In case run via github : kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/nfs_webtest_deploy.yml)
+kubectl create -f nfs_webtest_svc.yml   (In case run via github : kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/nfs_webtest_svc.yml)
 kubectl get deployment
 kubectl get svc
 kubectl get pods -o wide
@@ -102,7 +102,7 @@ exit
     exit
 
 11. (Master) Clean Up file and deployment by command:
-    kubectl delete -f nfs_webtest_deploy.yml    (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_20181124/master/WorkShop_2.7_Persistent_Storage/nfs_webtest_deploy.yml)
-    kubectl delete -f nfs_webtest_svc.yml   (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_20181124/master/WorkShop_2.7_Persistent_Storage/nfs_webtest_svc.yml)
-    kubectl delete -f nfs_pvc.yml   (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_20181124/master/WorkShop_2.7_Persistent_Storage/nfs_pvc.yml)
-    kubectl delete -f nfs_pv.yml    (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_20181124/master/WorkShop_2.7_Persistent_Storage/nfs_pv.yml)
+    kubectl delete -f nfs_webtest_deploy.yml    (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/nfs_webtest_deploy.yml)
+    kubectl delete -f nfs_webtest_svc.yml   (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/nfs_webtest_svc.yml)
+    kubectl delete -f nfs_pvc.yml   (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/nfs_pvc.yml)
+    kubectl delete -f nfs_pv.yml    (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/nfs_pv.yml)

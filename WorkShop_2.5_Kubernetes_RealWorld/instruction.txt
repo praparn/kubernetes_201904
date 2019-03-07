@@ -42,6 +42,7 @@ tmux new -s Lab
 	sed -i -e 's/name: ip-10-0-1-197.ap-southeast-1.compute.internal/name: <hostname of master node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
 	sed -i -e 's/clusterName: Kubernetes/clusterName: <ClusterName>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
 	sed -i -e 's/1.1.1.1/<Public IP Address of Master>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
+
 5. (Master) initial cluster by command:
 	sudo su -
 	swapoff -a
@@ -52,7 +53,7 @@ tmux new -s Lab
     -------------------------------------------------
     Token output:
     -------------------------------------------------
-    kubeadm join 10.0.1.246:6443 --token t3j553.j1vbrumbevrrztd3 --discovery-token-ca-cert-hash sha256:73386da78c1843b1fe5e4e405717943b71ecd1815673479b1202802fbe43cea0
+    kubeadm join 10.0.1.246:6443 --token 4hqsau.ozlonb6302xc0cn4 --discovery-token-ca-cert-hash sha256:600b3f66c2051914b9f51fcfb104b6b2e8d0a4c0d25f9d386010ef8d34dc9024
 
 	*Remark: Collect ca-cert-hash and token
 	-------------------------------------------------
@@ -93,16 +94,34 @@ kubectl --kubeconfig ./adminconfig.conf proxy --accept-hosts '.*'
 14. (local) Open browser by command (*Optional: For who install kubectl on local machine)
 http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
 
-15. (Worker1, Worker2) ssh and join to cluster by command:
+15. (Worker1) Prepare configuration for initial kubernetes worker:
+cd ~
+sed -i -e 's/token: tcnx80.a94onnw2gzuk32pl/token: <token id>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/sha256:16d0902983e434aa64799928aa650252eb06eb151cd88d02bacbd8cf3c2e26ee/<ca-cert-hash>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/apiServerEndpoint: ip-10-0-1-197.ap-southeast-1.compute.internal:6443/apiServerEndpoint: <full name of master node>:6443/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/name: ip-10-0-1-77.ap-southeast-1.compute.internal/name: <full name of worker1 node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+
+16. (Worker1) join cluster by command:
 sudo su -
 swapoff -a
-kubeadm join --token 2d2353.98187e352c741dd0 10.0.1.17:6443 --discovery-token-ca-cert-hash sha256:c3e75e689dadfb85baad004b7b777801c489eb1551901abc8e3c19c1e15b7add
-exit
+kubeadm join --config /home/ubuntu/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
 
-16. (Master) Check Node in Cluster by command (This take 5 - 10 min):
+17. (Worker2) Prepare configuration for initial kubernetes worker:
+cd ~
+sed -i -e 's/token: tcnx80.a94onnw2gzuk32pl/token: <token id>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/sha256:16d0902983e434aa64799928aa650252eb06eb151cd88d02bacbd8cf3c2e26ee/<ca-cert-hash>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/apiServerEndpoint: ip-10-0-1-197.ap-southeast-1.compute.internal:6443/apiServerEndpoint: <full name of master node>:6443/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/name: ip-10-0-1-77.ap-southeast-1.compute.internal/name: <full name of worker2 node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+
+18. (Worker2) join cluster by command:
+sudo su -
+swapoff -a
+kubeadm join --config /home/ubuntu/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+
+19. (Master) Check Node in Cluster by command (This take 5 - 10 min):
 watch kubectl get nodes
 
-17. (Master)Check Pods from all cluster system running by command:
+20. (Master)Check Pods from all cluster system running by command:
 watch kubectl get pods --all-namespaces
 
 18. (Master) Test deployment basic nginx pods by command
@@ -124,26 +143,66 @@ kubectl delete svc/webtest
 ====================================== Create Ingress Controller====================================================
 
 21. (Master) Create ingress set:
-# Create Namespace and SA 
-kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.5_Kubernetes_RealWorld/kubernetes-ingress/deployments/common/ns-and-sa.yaml
+	21.1. Create mandatory resource by command: 
+	kubectl apply -f ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/mandatory.yaml
+	*Remark: If you need to modified config. Edit this file first
+	vi ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/mandatory.yaml
+========================================
+Example:
+[...]
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-configuration
+  namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+data:													==> Add This
+  client-max-body-size: "50m" 							==> Add This
+[...]
+========================================
 
-# Create Default Secret for 404 Return
-kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.5_Kubernetes_RealWorld/kubernetes-ingress/deployments/common/default-server-secret.yaml
+	21.2 Check file service:
+	more ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/provider/aws/service-l4.yaml
+========================================
+Example:
+[...]
+metadata:
+  name: ingress-nginx
+  namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+  annotations:
+    # Enable PROXY protocol
+    service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: "*"
+    # Ensure the ELB idle timeout is less than nginx keep-alive timeout. By default,
+    # NGINX keep-alive is set to 75s. If using WebSockets, the value will need to be
+    # increased to '3600' to avoid any potential issues.
+  service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "60"
+	service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+	service.beta.kubernetes.io/aws-load-balancer-healthcheck-healthy-threshold: "2"
+	service.beta.kubernetes.io/aws-load-balancer-healthcheck-unhealthy-threshold: "2"
+	service.beta.kubernetes.io/aws-load-balancer-healthcheck-interval: "30"
+	service.beta.kubernetes.io/aws-load-balancer-healthcheck-timeout: "5"
+[...]
+========================================
 
-# Add optional for configure nginx customization (Ref: https://github.com/nginxinc/kubernetes-ingress/tree/master/examples/customization)
-kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.5_Kubernetes_RealWorld/kubernetes-ingress/deployments/common/nginx-config.yaml
+	21.3 Apply service and configuration as below:
+	kubectl apply -f ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/provider/aws/service-l4.yaml
+	kubectl apply -f ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/provider/aws/patch-configmap-l4.yaml
 
-# Configure rbac
-kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.5_Kubernetes_RealWorld/kubernetes-ingress/deployments/rbac/rbac.yaml
+	21.4 Check by command: 
+	watch kubectl get pods -n=ingress-nginx
 
-# Create Daemon Setup
-kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.5_Kubernetes_RealWorld/kubernetes-ingress/deployments/daemon-set/nginx-ingress.yaml
-
-# Check ingress running
-watch kubectl get pods --namespace=nginx-ingress
-
-# Test access via browser (Expect: 404 Not Found)
-http://<<Public IP of Any Node>
+	21.5 Collect external cname by command:
+	kubectl get svc -n=ingress-nginx	(This may take several miniute before finished)
+========================================
+Example:
+NAME            TYPE           CLUSTER-IP       EXTERNAL-IP                                                                   PORT(S)                      AGE
+ingress-nginx   LoadBalancer   10.108.187.142   af4e0d29c410111e9a11002f20ffeb23-988151595.ap-southeast-1.elb.amazonaws.com   80:31252/TCP,443:31461/TCP   17s
+========================================
 
 22. (Master) Test deploy ingress service
 
@@ -160,8 +219,8 @@ http://<<Public IP of Any Node>
 	kubectl describe ing/ingresswebtest
 
 23. (local) Test access website by command or browser:
-	curl http://<Public IP of Any Node> -H 'Host:webtest1.kuberneteslabthailand.com'
-	curl http://<Public IP of Any Node> -H 'Host:webtest2.kuberneteslabthailand.com'
+	curl http://<CNAME AWS's ELB> -H 'Host:webtest1.kuberneteslabthailand.com'
+	curl http://<CNAME AWS's ELB> -H 'Host:webtest2.kuberneteslabthailand.com'
 
 24. (Master) Delete Existing Ingress by command:
 	kubectl delete -f ingress_webtest.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.4_Ingress_Network/ingress_webtest.yml)

@@ -7,8 +7,8 @@ This workshop will use execute some command on container for probe
 ====================================================
 0. Access to workshop folder by command: "cd ~/kubernetes_20181124/WorkShop_1.6_Liveness_Readiness_Probe/"
 1. Create Deployment and check status by command:
-	kubectl create -f webtest_deploy_liveness_readiness_exec.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_20180701/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_deploy_liveness_readiness_exec.yml )
-	kubectl create -f webtest_svc.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_20180701/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_svc.yml )
+	kubectl create -f webtest_deploy_liveness_readiness_exec.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_deploy_liveness_readiness_exec.yml )
+	kubectl create -f webtest_svc.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_svc.yml )
 	kubectl get svc/webtest
 	kubectl get deployment/webtest
 	kubectl describe deployment/webtest
@@ -34,7 +34,7 @@ This workshop will use execute some command on container for probe
 	exit
 
 6. Cleanup Lab by command:
-	kubectl delete -f webtest_deploy_liveness_readiness_exec.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_20180701/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_deploy_liveness_readiness_exec.yml)
+	kubectl delete -f webtest_deploy_liveness_readiness_exec.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_deploy_liveness_readiness_exec.yml)
 
 
 ====================================================
@@ -117,8 +117,8 @@ This workshop will use execute some command on container for probe
 ====================================================
 
 1. Create Deployment and check status by command:
-	kubectl create -f webtest_deploy_readiness_1.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_20180701/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_deploy_readiness_1.yml )
-	kubectl create -f webtest_deploy_readiness_2.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_20180701/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_deploy_readiness_2.yml )
+	kubectl create -f webtest_deploy_readiness_1.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_deploy_readiness_1.yml )
+	kubectl create -f webtest_deploy_readiness_2.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_deploy_readiness_2.yml )
 	kubectl get deployment/webtest1
 	kubectl describe deployment/webtest1
 	kubectl get deployment/webtest2
@@ -151,6 +151,6 @@ This workshop will use execute some command on container for probe
 8. Test access browser/curl: http://<Public IP>:32500 (5 - 6 Time)
 
 9. Cleanup Lab by command:
-	kubectl delete -f webtest_deploy_readiness_1.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_20180701/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_deploy_readiness_1.yml)
-	kubectl delete -f webtest_deploy_readiness_2.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_20180701/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_deploy_readiness_2.yml)
-	kubectl delete -f webtest_svc.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_20180701/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_svc.yml)
+	kubectl delete -f webtest_deploy_readiness_1.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_deploy_readiness_1.yml)
+	kubectl delete -f webtest_deploy_readiness_2.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_deploy_readiness_2.yml)
+	kubectl delete -f webtest_svc.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_svc.yml)
