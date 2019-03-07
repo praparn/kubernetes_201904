@@ -17,6 +17,9 @@ nodeRegistration:
   taints:
   - effect: NoSchedule
     key: node-role.kubernetes.io/master
+kind: MasterConfiguration
+apiServerCertSANs:
+  - 1.1.1.1
 ---
 apiServer:
   timeoutForControlPlane: 4m0s
