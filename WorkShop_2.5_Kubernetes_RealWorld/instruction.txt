@@ -39,7 +39,7 @@ tmux new -s Lab
 
 4. (Master) Prepare configuration for initial kubernetes master
 	cd ~
-	sed -i -e 's/name: ip-10-0-1-197.ap-southeast-1.compute.internal/name: <hostname of master node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
+	sed -i -e 's/name: hostnamemaster/name: <hostname of master node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
 	sed -i -e 's/clusterName: Kubernetes/clusterName: <ClusterName>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
 	sed -i -e 's/1.1.1.1/<Public IP Address of Master>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
 
@@ -96,10 +96,10 @@ http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-da
 
 15. (Worker1) Prepare configuration for initial kubernetes worker:
 cd ~
-sed -i -e 's/token: tcnx80.a94onnw2gzuk32pl/token: <token id>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
-sed -i -e 's/sha256:16d0902983e434aa64799928aa650252eb06eb151cd88d02bacbd8cf3c2e26ee/<ca-cert-hash>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
-sed -i -e 's/apiServerEndpoint: ip-10-0-1-197.ap-southeast-1.compute.internal:6443/apiServerEndpoint: <full name of master node>:6443/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
-sed -i -e 's/name: ip-10-0-1-77.ap-southeast-1.compute.internal/name: <full name of worker1 node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/token: tokenid/token: <token id>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/sha256:cahash/<ca-cert-hash>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/apiServerEndpoint: hostnamemaster:6443/apiServerEndpoint: <full name of master node>:6443/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/name: hostnameworker/name: <full name of worker1 node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
 
 16. (Worker1) join cluster by command:
 sudo su -
@@ -108,10 +108,10 @@ kubeadm join --config /home/ubuntu/kubernetes_201904/WorkShop_2.5_Kubernetes_Rea
 
 17. (Worker2) Prepare configuration for initial kubernetes worker:
 cd ~
-sed -i -e 's/token: tcnx80.a94onnw2gzuk32pl/token: <token id>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
-sed -i -e 's/sha256:16d0902983e434aa64799928aa650252eb06eb151cd88d02bacbd8cf3c2e26ee/<ca-cert-hash>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
-sed -i -e 's/apiServerEndpoint: ip-10-0-1-197.ap-southeast-1.compute.internal:6443/apiServerEndpoint: <full name of master node>:6443/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
-sed -i -e 's/name: ip-10-0-1-77.ap-southeast-1.compute.internal/name: <full name of worker2 node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/token: tokenid/token: <token id>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/sha256:cahash//<ca-cert-hash>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/apiServerEndpoint: hostnamemaster:6443/apiServerEndpoint: <full name of master node>:6443/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/name: hostnameworker/name: <full name of worker2 node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
 
 18. (Worker2) join cluster by command:
 sudo su -
