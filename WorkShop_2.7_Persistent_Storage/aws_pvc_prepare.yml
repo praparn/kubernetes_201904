@@ -34,8 +34,8 @@ spec:
             protocol: TCP
           volumeMounts:
           - name: aws-share-pvc
-            mountPath: /usr/src/app
+            mountPath: /source
       volumes:
       - name: aws-share-pvc
         persistentVolumeClaim:
-          claimName: ws-ebs-pvc
+          claimName: aws-ebs-pvc
