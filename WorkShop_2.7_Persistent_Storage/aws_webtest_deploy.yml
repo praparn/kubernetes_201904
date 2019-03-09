@@ -48,6 +48,16 @@ spec:
           volumeMounts:
           - name: aws-share-pvc
             mountPath: /usr/src/app
+      initContainers:
+        - name: downloadsource
+          image: ubuntu:16.04
+          command: ['/bin/bash', 'curl https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/mainlite.py > /source/mainlite.py']
+          volumeMounts:
+          - name: aws-share-pvc
+            mountPath: /source
+    volumeMounts:
+    - name: workdir
+      mountPath: "/work-dir"
       volumes:
       - name: aws-share-pvc
         persistentVolumeClaim:
