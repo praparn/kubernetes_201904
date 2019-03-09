@@ -55,9 +55,6 @@ spec:
           volumeMounts:
           - name: aws-share-pvc
             mountPath: /source
-    volumeMounts:
-    - name: workdir
-      mountPath: "/work-dir"
       volumes:
       - name: aws-share-pvc
         persistentVolumeClaim:
