@@ -1,6 +1,6 @@
 Instructor for Monitor Kubernetes Farm with Prometheus and Grafana:
 ====================================================
-Part0: Install Metric Server
+Part1: Install Metric Server
 ====================================================
 1. (Master) Create Metric Server:
 	cd ~/kubernetes_201904/WorkShop_2.8_HPA_WorkShop/metrics-server/
@@ -12,34 +12,9 @@ Part0: Install Metric Server
 	kubectl top nodes
 
 ====================================================
-Part1: Install Helm Server
-====================================================
-1. (Master) Install helm client on master node by command:
-		curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
-		chmod 700 get_helm.sh
-		./get_helm.sh
-
-2. (Master) Enable role for tiller by command:
-        kubectl create clusterrolebinding tiller-cluster-admin \
-                --clusterrole=cluster-admin \
-                --serviceaccount=kube-system:default
-    
-3. (Master) Initial Helm by command:
-		helm init
-	
-4. (Master) Monitor Tiller until it ready:
-		watch kubectl get pods -n=kube-system
-
-5. (Master) Check helm readiness by command:
-		helm list			==> Expect blank
-
-6. (Master) Update helm standard repository by command:
-		helm repo add stable https://kubernetes-charts.storage.googleapis.com
-
-====================================================
 Part2: Create Application and Service for Operate
 ====================================================
-1. (Master) Create Namespace by command:
+1. (Master) Create HPA by command:
 	kubectl create -f webtest_deploy_hpa.yml (In case github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_20180701/master/WorkShop_2.8_HPA_WorkShop/webtest_deploy_hpa.yml)
 	 
 2. (Master) Check Pods status by command:
@@ -50,33 +25,30 @@ Part2: Create Application and Service for Operate
 	http://x.x.x.x:32500
 
 ====================================================
-Part3: Install Prometheus-operator with Helm
+Part3: Install Prometheus-operator
 ====================================================
-1. (Master) Create ServiceAccount for Tiller in the kube-system namespace by command: (Optional)
-	kubectl -n kube-system create sa tiller
+1. (Master) Install Prometheus-operator by command:
+	kubectl create -f prometheus-operator/contrib/kube-prometheus/manifests/ (In case github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_20180701/master/WorkShop_2.10_Monitor/prometheus-operator/contrib/kube-prometheus/manifests/ )
 
-2. (Master) Create ClusterRoleBinding for Tiller by command: (Optional)
-	kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
-
-3. (Master) Install Tiller, specifying the new ServiceAccount (Optional)
-	helm init --service-account tiller
-
-4. (Master) Install Prometheus-operator by command:
-	helm repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
-	helm install coreos/prometheus-operator --name prometheus-operator --namespace monitoring
-	helm install coreos/kube-prometheus --name kube-prometheus --namespace monitoring	
-
-5. (Master) Check result of pods by commands:
+2. (Master) Check result of pods by commands:
 	watch kubectl get pods -n monitoring
 
-6. (Master) Check CustomerResourceDefinition by command:
+3. (Master) Check CustomerResourceDefinition by command:
 	kubectl get CustomResourceDefinition
 	############################################
 	*Remark:  Expect to found record below
-	prometheuses.monitoring.coreos.com            2018-11-04T03:32:35Z
-	prometheusrules.monitoring.coreos.com         2018-11-04T03:32:35Z
-	servicemonitors.monitoring.coreos.com         2018-11-04T03:32:35Z
+prometheuses.monitoring.coreos.com            2019-03-09T17:06:47Z
+prometheusrules.monitoring.coreos.com         2019-03-09T17:06:47Z
+servicemonitors.monitoring.coreos.com         2019-03-09T17:06:47Z
+alertmanagers.monitoring.coreos.com           2019-03-09T17:17:05Z
 	############################################
+
+*Remark: In case you need to roll-back this case:
+	- helm delete --purge prometheus-operator
+	- kubectl delete crd prometheuses.monitoring.coreos.com
+	- kubectl delete crd prometheusrules.monitoring.coreos.com
+	- kubectl delete crd servicemonitors.monitoring.coreos.com
+	- kubectl delete crd alertmanagers.monitoring.coreos.com
 
 ====================================================
 Part4: Open dashboard for access
@@ -85,10 +57,17 @@ Part4: Open dashboard for access
 	kubectl get pods -n=monitoring				==> Record name of grafana, prometheus pods
 	kubectl get svc -n=monitoring
 
-2. (local) Port forward for Grafana's dashboard
+2. (Master) Set port-forward for Grafana's dashboard
+	kubectl port-forward --address 0.0.0.0 pods/<Grafana pods's name> 3000:3000 -n=monitoring
+	(Ex: kubectl port-forward --address 0.0.0.0 pods/prometheus-operator-grafana-544db856cf-zl2dp 3000:3000 -n=monitoring)
+
+	*Optional: For run from local machine
 	kubectl --kubeconfig ./adminconfig.conf port-forward <Grafana pods's name> 3000 -n=monitoring
-	(Ex: kubectl --kubeconfig ./adminconfig.conf port-forward kube-prometheus-grafana-6f6c894c5b-x4svm 3000 -n=monitoring)
-3. (local) Open browser and open granfana dashboard by url http://127.0.0.1:3000
+	(Ex: kubectl --kubeconfig ./adminconfig.conf port-forward --address 0.0.0.0 pods/prometheus-operator-grafana-544db856cf-zl2dp 3000:3000 -n=monitoring)
+
+3. (local) Open browser and open granfana dashboard by url http://<Public IP of Master>:3000
+	Username: admin
+	Password: admin
 
 4. (local) Port forward for Prometheus's dashboard
 	kubectl --kubeconfig ./adminconfig.conf port-forward <Prometheus pods's name> 9090 -n=monitoring

@@ -64,7 +64,7 @@ df -h
 http://<any public ip>:32500
 
 6. (Master) Clean Up file and deployment by command:
-    kubectl delete -f aws_webtest_deploy.yml    (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/aws_webtest_deploy.yml)
+    kubectl delete -f aws_webtest_deploy.yml    (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/aws_webtest_deployall.yml)
     kubectl delete -f aws_webtest_svc.yml   (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/aws_webtest_svc.yml)
     kubectl delete -f ~/kubernetes_201904/WorkShop_2.7_Persistent_Storage/aws_pvc.yml (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/aws_pvc.yml)
     kubectl delete -f ~/kubernetes_201904/WorkShop_2.7_Persistent_Storage/aws_sc.yml (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/aws_sc.yml)
