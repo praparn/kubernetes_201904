@@ -24,7 +24,7 @@ Note: This instruction will demonstrate about how to use RC for maintain avaliab
 5. Test curl and web browser for access web by command:
 	curl http://<Private IP>:32500
 
-	open browser for test can operate: http://<Private IP>:32500
+	open browser for test can operate: http://<Public IP>:32500
 
 6. Delete some Pods by command:
 	

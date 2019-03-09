@@ -14,11 +14,12 @@ Lab Description: (Check you excel sheet)
 ClusterName: XXXXX
 CA-Cert-Hash: XXXXX
 Token: XXXXX
+Ingress CNAME: XXXXX
 
-Machine name		            			Roles:						IP Address: (Private)		IP Address: (Public)			Hostname
-Training_DockerZerotoHero_StudentGX_1	    Master						10.0.1.X					X.X.X.X							ip-10-0-1-X.ap-southeast-1.compute.internal
-Training_DockerZerotoHero_StudentGX_2       NodePort					10.0.1.X					X.X.X.X							ip-10-0-1-X.ap-southeast-1.compute.internal
-Training_DockerZerotoHero_StudentGX_3   	NodePort					10.0.1.X					X.X.X.X							ip-10-0-1-X.ap-southeast-1.compute.internal
+Machine name		            								Roles:						IP Address: (Private)		IP Address: (Public)			Hostname
+Training_DockerZerotoHero_StudentGX_1	   		 	Master						10.0.1.X								X.X.X.X										ip-10-0-1-X.ap-southeast-1.compute.internal
+Training_DockerZerotoHero_StudentGX_2       	NodePort					10.0.1.X								X.X.X.X										ip-10-0-1-X.ap-southeast-1.compute.internal
+Training_DockerZerotoHero_StudentGX_3   			NodePort					10.0.1.X								X.X.X.X										ip-10-0-1-X.ap-southeast-1.compute.internal
 ===================================================
 0. Follow document pdf for access ssh (Windows/MACOS)
 
@@ -60,7 +61,7 @@ tmux new -s Lab
 
 6. (Master) Setup run cluster system by command (Regular User):
 	mkdir -p $HOME/.kube
-    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config	==> Answer: "Y"
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config	==> Answer: "Y"
 	sudo chown $(id -u):$(id -g) $HOME/.kube/config
 	kubectl taint nodes --all node-role.kubernetes.io/master-
 
@@ -77,9 +78,9 @@ tmux new -s Lab
 
 10. (Master) Install dashboard by command:(Take 5 - 10 min)
 	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_1.7_Resource_Management/dashboard.yml
-	kubectl proxy --address='<Private IP>' --accept-hosts='^*$'
 	watch kubectl get pods --all-namespaces
-
+	kubectl proxy --address='<Private IP>' --accept-hosts='^*$'
+	
 11. (local) Check dashboard by access browser:
 	http://<Public IP of Master>:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
 
@@ -158,8 +159,8 @@ metadata:
   labels:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
-data:													==> Add This
-  client-max-body-size: "50m" 							==> Add This
+data:													
+  client-max-body-size: "50m" 
 [...]
 ========================================
 
@@ -197,7 +198,7 @@ metadata:
 	watch kubectl get pods -n=ingress-nginx
 
 	21.5 Collect external cname by command:
-	kubectl get svc -n=ingress-nginx	(This may take several miniute before finished)
+	kubectl get svc -n=ingress-nginx	(This may take several miniute before finished) ==> Record "CNAME of ELB"
 ========================================
 Example:
 NAME            TYPE           CLUSTER-IP       EXTERNAL-IP                                                                   PORT(S)                      AGE

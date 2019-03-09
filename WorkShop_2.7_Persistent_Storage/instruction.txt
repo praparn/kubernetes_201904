@@ -2,16 +2,16 @@ Instruction for Workshop 2.7 Kubernetes for Stateful Application:
 Note: This instruction will start lab for kubernetes for real workshop:
 ====================================================
 Lab Description:
-Machine name		            			Roles:						IP Address: (Private)		IP Address: (Public)
-Training_DockerZerotoHero_StudentGX_1	    Master						10.0.X.X					X.X.X.X					
-Training_DockerZerotoHero_StudentGX_2       NodePort					10.0.X.X					X.X.X.X
-Training_DockerZerotoHero_StudentGX_3 		NodePort					10.0.X.X					X.X.X.X
+Machine name		            					Roles:						IP Address: (Private)		IP Address: (Public)			Hostname
+Training_DockerZerotoHero_StudentGX_1	   		 	Master						10.0.1.X								X.X.X.X										ip-10-0-1-X.ap-southeast-1.compute.internal
+Training_DockerZerotoHero_StudentGX_2       		NodePort					10.0.1.X								X.X.X.X										ip-10-0-1-X.ap-southeast-1.compute.internal
+Training_DockerZerotoHero_StudentGX_3   			NodePort					10.0.1.X								X.X.X.X										ip-10-0-1-X.ap-southeast-1.compute.internal
 ===================================================
 
 ===================================================
-Part 1: Initial NFS ShareFile on Ubuntu
+Part 1: Create Storage Class and Test Provision Storage
 ===================================================
-1. (All Node) Install Component for NFS ShareFile by command:
+1. (Master) Create storage class for AWS by command:
 sudo apt-get install -y nfs-kernel-server nfs-common
 
 2. (Master) Create new directory for share and change permission for allow all operate by command:

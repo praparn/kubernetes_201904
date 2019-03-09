@@ -35,6 +35,7 @@ docker image pull labdocker/cadvisor:latest
 
 5. Test curl and web browser for access web by command:
 	curl http://<Private IP>:<port>
+	Open browser: http://<Public IP>:<port>
 
 6. Check detail of Pods and service by command:
 	kubectl describe pods webtest
@@ -79,7 +80,7 @@ This workshop will create Pods with multiple container
 5. Check ip address of minikube by command: ifconfig
 
 6. Set environment for test by command:
-	export Server_IP=<Pribate IP>
+	export Server_IP=<Private IP>
 	export Server_Port=30500	==> Check port had been fixed from YML file
 
 

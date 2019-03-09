@@ -21,15 +21,17 @@ metadata:
 ========================================
 	0.2 Create service with NodePort by command: 
 	kubectl apply -f ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/provider/baremetal/service-nodeport.yaml
-	kubectl get svc -n=ingress-nginx				==> Record Port No for Create LoadBalancer
+	kubectl get svc -n=ingress-nginx				==> Record Port No for Create LoadBalancer (*Important)
 	kubectl get pods -n=ingress-nginx			
 
 ========================================
 Example:
-NAME            TYPE           CLUSTER-IP       EXTERNAL-IP                                                                   PORT(S)                      AGE
-ingress-nginx   LoadBalancer   10.108.187.142   af4e0d29c410111e9a11002f20ffeb23-988151595.ap-southeast-1.elb.amazonaws.com   80:31252/TCP,443:31461/TCP   17s
+NAME            TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+ingress-nginx   NodePort   10.96.228.199   <none>        80:32037/TCP,443:32119/TCP   12h		(Port of http(80) ==> 32037, Port of https(443) ==> 32119 )
 ========================================
 
+	0.3 Test open browser: (404 Not Found was expected):
+		http://<public ip>:<Port of http(80)>
 
 1. Create Service/Pods/Deployment for webtest1 and webtest2 by command:
 	kubectl create -f webtest_deploy.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.4_Ingress_Network/webtest_deploy.yml )
@@ -37,7 +39,6 @@ ingress-nginx   LoadBalancer   10.108.187.142   af4e0d29c410111e9a11002f20ffeb23
 
 2. View service for connection by command:
 	kubectl get svc -o wide
-
 	-------------------------------
 	Example Result:
 	-------------------------------
@@ -48,7 +49,6 @@ _L,version=1.0
 webtest2     10.0.0.222   <none>        80/TCP    11s       environment=development,module=WebServer,name=webtest2,owner=Praparn
 _L,version=1.0
 	-------------------------------
-
 	
 3. Try to connect for each service via curl by command:
 	kubectl run curl --image=radial/busyboxplus:curl -i --tty
@@ -71,12 +71,12 @@ _L,version=1.0
 	echo "<Public IP> webtest1.kuberneteslabthailand.com webtest2.kuberneteslabthailand.com" | sudo tee -a /private/etc/hosts
 
 	*Remark for MAC: for case you don't prefer for add hosts please kindly use curl instead:
-	curl http://<Public IP> -H 'Host:webtest1.kuberneteslabthailand.com'
-	curl http://<Public IP> -H 'Host:webtest2.kuberneteslabthailand.com'
+	curl http://<Public IP>:<Port of http(80)> -H 'Host:webtest1.kuberneteslabthailand.com'
+	curl http://<Public IP>:<Port of http(80) -H 'Host:webtest2.kuberneteslabthailand.com'
 
 7. Test access website by command or browser:
-	http://webtest1.kuberneteslabthailand.com
-	http://webtest2.kuberneteslabthailand.com
+	http://webtest1.kuberneteslabthailand.com:<Port from Record>
+	http://webtest2.kuberneteslabthailand.com:<Port from Record>
 
 8. Delete Existing Ingress by command:
 	kubectl delete -f ingress_webtest.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.4_Ingress_Network/ingress_webtest.yml)
@@ -91,12 +91,12 @@ _L,version=1.0
 	kubectl describe ing/ingresswebtesttls
 
 11. Test access website by browser:
-	https://webtest1.kuberneteslabthailand.com
-	https://webtest2.kuberneteslabthailand.com
+	https://webtest1.kuberneteslabthailand.com:<Port of https(443)>
+	https://webtest2.kuberneteslabthailand.com:<Port of https(443)>
 
 	*Remark for MAC: for case you don't prefer for add hosts please kindly use curl instead:
-	curl https://<Public IP> -k -H 'Host:webtest1.kuberneteslabthailand.com'
-	curl https://<Public IP> -k -H 'Host:webtest2.kuberneteslabthailand.com'
+	curl https://<Public IP>:<Port of https(443)> -k -H 'Host:webtest1.kuberneteslabthailand.com'
+	curl https://<Public IP>:<Port of https(443)> -k -H 'Host:webtest2.kuberneteslabthailand.com'
 
 
 12. Clean Up Lab:

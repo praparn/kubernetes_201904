@@ -2,10 +2,10 @@ Instruction for Workshop 2.6 Orchestrator Assignment:
 Note: This instruction will demonstration for assign pods to node with several constrain:
 ====================================================
 Lab Description:
-Machine name		            			Roles:						IP Address: (Private)		IP Address: (Public)
-Training_DockerZerotoHero_StudentGX_1	    Master						10.0.X.X					X.X.X.X					
-Training_DockerZerotoHero_StudentGX_2       NodePort					10.0.X.X					X.X.X.X
-Training_DockerZerotoHero_StudentGX_3 		NodePort					10.0.X.X					X.X.X.X
+Machine name		            					Roles:						IP Address: (Private)		IP Address: (Public)			Hostname
+Training_DockerZerotoHero_StudentGX_1	   		 	Master						10.0.1.X								X.X.X.X										ip-10-0-1-X.ap-southeast-1.compute.internal
+Training_DockerZerotoHero_StudentGX_2       		NodePort					10.0.1.X								X.X.X.X										ip-10-0-1-X.ap-southeast-1.compute.internal
+Training_DockerZerotoHero_StudentGX_3   			NodePort					10.0.1.X								X.X.X.X										ip-10-0-1-X.ap-southeast-1.compute.internal
 ===================================================
 Part 1: nodeSelector:
 1. (local) SSH to kubernetes
@@ -69,7 +69,7 @@ Part 4: Inter-Pod Affinity and Anti-affinity:
 	kubectl get pods -o wide
 
 3. (Master) Delete Pods by command:
-	kubectl delete -f webtest_pod_affinity_topokey.yml	(In case run via github:: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.6_Orchestrator_Assignment/webtest_pod_affinity_topokey.yml)
+	kubectl delete -f webtest_pod_affinity_topokey.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.6_Orchestrator_Assignment/webtest_pod_affinity_topokey.yml)
 	kubectl delete -f webtest_pod_affinity.yml	(In case run via github:: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.6_Orchestrator_Assignment/webtest_pod_affinity.yml)
 
 Part 5: Taint and Tolerations
