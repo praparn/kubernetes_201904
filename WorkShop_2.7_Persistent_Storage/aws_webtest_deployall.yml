@@ -35,7 +35,18 @@ spec:
           volumeMounts:
           - name: aws-share-pvc
             mountPath: /usr/src/app
+      initContainers:
+        - name: download
+          image: labdocker/alpineweb:latest
+          volumeMounts:
+          - name: aws-share-pvc
+            mountPath: /source
+          command:
+          - wget
+          - "-O"
+          - "/source/mainlite.py"
+          - https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/mainlite.py
       volumes:
       - name: aws-share-pvc
         persistentVolumeClaim:
-          claimName: ws-ebs-pvc
+          claimName: aws-ebs-pvc
