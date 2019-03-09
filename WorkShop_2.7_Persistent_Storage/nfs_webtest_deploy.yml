@@ -1,3 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+   name: aws-pvc
+   annotations:
+      volume.beta.kubernetes.io/storage-class: aws-ebs
+spec:
+   accessModes:
+      - ReadWriteOnce
+   resources:
+      requests:
+         storage: 10Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -33,9 +46,9 @@ spec:
           - containerPort: 5000
             protocol: TCP
           volumeMounts:
-            - name: nfs-share-pvc
-              mountPath: "/usr/src/app"
+          - name: aws-share-pvc
+            mountPath: /usr/src/app
       volumes:
-      - name: nfs-share-pvc
+      - name: aws-share-pvc
         persistentVolumeClaim:
-          claimName: nfs-share-pvc
+          claimName: aws-pvc
