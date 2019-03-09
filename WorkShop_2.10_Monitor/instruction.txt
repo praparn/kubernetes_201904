@@ -28,7 +28,7 @@ Part2: Create Application and Service for Operate
 Part3: Install Prometheus-operator
 ====================================================
 1. (Master) Install Prometheus-operator by command:
-	kubectl create -f prometheus-operator/contrib/kube-prometheus/manifests/ (In case github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_20180701/master/WorkShop_2.10_Monitor/prometheus-operator/contrib/kube-prometheus/manifests/ )
+	kubectl create -f ~/kubernetes_201904/WorkShop_2.10_Monitor/prometheus-operator/contrib/kube-prometheus/manifests/
 
 2. (Master) Check result of pods by commands:
 	watch kubectl get pods -n monitoring
@@ -59,7 +59,7 @@ Part4: Open dashboard for access
 
 2. (Master) Set port-forward for Grafana's dashboard
 	kubectl port-forward --address 0.0.0.0 pods/<Grafana pods's name> 3000:3000 -n=monitoring
-	(Ex: kubectl port-forward --address 0.0.0.0 pods/prometheus-operator-grafana-544db856cf-zl2dp 3000:3000 -n=monitoring)
+	(Ex: kubectl port-forward --address 0.0.0.0 pods/grafana-5d8f767-25lx5 3000:3000 -n=monitoring)
 
 	*Optional: For run from local machine
 	kubectl --kubeconfig ./adminconfig.conf port-forward <Grafana pods's name> 3000 -n=monitoring
@@ -68,10 +68,6 @@ Part4: Open dashboard for access
 3. (local) Open browser and open granfana dashboard by url http://<Public IP of Master>:3000
 	Username: admin
 	Password: admin
-
-4. (local) Port forward for Prometheus's dashboard
-	kubectl --kubeconfig ./adminconfig.conf port-forward <Prometheus pods's name> 9090 -n=monitoring
-	(Ex:kubectl --kubeconfig ./adminconfig.conf port-forward prometheus-kube-prometheus-0 9090 -n=monitoring)
 
 ====================================================
 Part5: Test generate load
