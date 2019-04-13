@@ -110,7 +110,7 @@ kubeadm join --config /home/ubuntu/kubernetes_201904/WorkShop_2.5_Kubernetes_Rea
 17. (Worker2) Prepare configuration for initial kubernetes worker:
 cd ~
 sed -i -e 's/token: tokenid/token: <token id>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
-sed -i -e 's/sha256:cahash//<ca-cert-hash>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/sha256:cahash/<ca-cert-hash>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
 sed -i -e 's/apiServerEndpoint: hostnamemaster:6443/apiServerEndpoint: <full name of master node>:6443/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
 sed -i -e 's/name: hostnameworker/name: <full name of worker2 node>/g' ~/kubernetes_201904/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
 

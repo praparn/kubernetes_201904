@@ -27,8 +27,9 @@ Part2: Create Application and Service for Operate
 ====================================================
 Part3: Install Prometheus-operator
 ====================================================
+
 1. (Master) Install Prometheus-operator by command:
-	kubectl create -f ~/kubernetes_201904/WorkShop_2.10_Monitor/prometheus-operator/contrib/kube-prometheus/manifests/
+	helm install stable/prometheus-operator --name prometheus-operator --namespace monitoring
 
 2. (Master) Check result of pods by commands:
 	watch kubectl get pods -n monitoring
@@ -43,12 +44,13 @@ servicemonitors.monitoring.coreos.com         2019-03-09T17:06:47Z
 alertmanagers.monitoring.coreos.com           2019-03-09T17:17:05Z
 	############################################
 
-*Remark: In case you need to roll-back this case:
-	- helm delete --purge prometheus-operator
-	- kubectl delete crd prometheuses.monitoring.coreos.com
-	- kubectl delete crd prometheusrules.monitoring.coreos.com
-	- kubectl delete crd servicemonitors.monitoring.coreos.com
-	- kubectl delete crd alertmanagers.monitoring.coreos.com
+*Remark: In case you need to roll-back this case: (Wait 5 min before start next deploy)
+	helm delete prometheus-operator
+	kubectl delete crd prometheuses.monitoring.coreos.com
+	kubectl delete crd prometheusrules.monitoring.coreos.com
+	kubectl delete crd servicemonitors.monitoring.coreos.com
+	kubectl delete crd alertmanagers.monitoring.coreos.com
+	
 
 ====================================================
 Part4: Open dashboard for access
@@ -67,8 +69,12 @@ Part4: Open dashboard for access
 
 3. (local) Open browser and open granfana dashboard by url http://<Public IP of Master>:3000
 	Username: admin
-	Password: admin
+	Password: prom-operator
+	*Remark: check by command: 
+	kubectl get secret --namespace monitoring prometheus-operator-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+	kubectl get secret --namespace monitoring prometheus-operator-grafana -o jsonpath="{.data.admin-user}" | base64 --decode ; echo
 
+kubectl get secret --namespace monitoring grafana-credentials -o yaml
 ====================================================
 Part5: Test generate load
 ====================================================
@@ -77,9 +83,7 @@ Part5: Test generate load
 	wget -q -O- http://webtest.default.svc.cluster.local:5000
 	while true; sleep 0.001; do wget -q -O- http://webtest.default.svc.cluster.local:5000; done
 
-2. (Master) Monitor Performance via Grafana and command line: (Interval is 5 min)
-	kubectl top pods
-	kubectl top nodes
+2. (Master) Monitor Performance via Grafana: (Interval is 5 min)
 
 3. (Master) Scale Down by Ctrl+C on load-generate
 
