@@ -12,7 +12,30 @@ Part1: Install Metric Server
 	kubectl top nodes
 
 ====================================================
-Part2: Create Application and Service for Operate
+Part2: Install Helm & Tiller
+====================================================
+### Run on Master Node ###
+1. Install helm client on master node by command:
+		curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
+		chmod 700 get_helm.sh
+		./get_helm.sh
+
+2. Enable role for tiller by command:
+        kubectl create clusterrolebinding tiller-cluster-admin \
+                --clusterrole=cluster-admin \
+                --serviceaccount=kube-system:default
+    
+3. Initial Helm by command:
+		helm init --history-max 200
+	
+4. Monitor Tiller until it ready:
+		watch kubectl get pods -n=kube-system
+
+5. Check helm readiness by command:
+		helm list			==> Expect blank
+
+====================================================
+Part3: Create Application and Service for Operate
 ====================================================
 1. (Master) Create HPA by command:
 	kubectl create -f webtest_deploy_hpa.yml (In case github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_20180701/master/WorkShop_2.8_HPA_WorkShop/webtest_deploy_hpa.yml)
@@ -25,7 +48,7 @@ Part2: Create Application and Service for Operate
 	http://x.x.x.x:32500
 
 ====================================================
-Part3: Install Prometheus-operator
+Part4: Install Prometheus-operator
 ====================================================
 
 1. (Master) Install Prometheus-operator by command:
@@ -74,7 +97,6 @@ Part4: Open dashboard for access
 	kubectl get secret --namespace monitoring prometheus-operator-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 	kubectl get secret --namespace monitoring prometheus-operator-grafana -o jsonpath="{.data.admin-user}" | base64 --decode ; echo
 
-kubectl get secret --namespace monitoring grafana-credentials -o yaml
 ====================================================
 Part5: Test generate load
 ====================================================
