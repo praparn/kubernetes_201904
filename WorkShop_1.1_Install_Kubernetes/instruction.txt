@@ -40,7 +40,7 @@ Link for download:
     cd ~/
     git clone https://github.com/praparn/kubernetes_201904.git
 
-11. Now all workshop is on "/home/ubuntu/kubernetes_201004"
+11. Now all workshop is on "/home/ubuntu/kubernetes_201904"
 
 
 *Remark: In case you need to reinitial all this lab again please kindly following command below (*Warnning: This will reset all lab that you had been operate before)

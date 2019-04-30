@@ -18,8 +18,11 @@ Part0: Install Helm & Tiller
 4. Monitor Tiller until it ready:
 		watch kubectl get pods -n=kube-system
 
-5. Check helm readiness by command:
+5. Check helm readiness and update by command:
 		helm list			==> Expect blank
+    helm repo update ==> Update helm
+
+    (Remark: Case to rollback and reinitial helm/tiller: helm reset --force)
 
 ====================================================
 Part 1: Deploy grafana via helm:
@@ -92,9 +95,9 @@ NOTES:
    helmgrafana.default.svc.cluster.local
 
    Get the Grafana URL to visit by running these commands in the same shell:
-export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services helmgrafana)
-     export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
-     echo http://$NODE_IP:$NODE_PORT
+  export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services helmgrafana)
+  export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
 
 
 3. Login with the password from step 1 and the username: admin
