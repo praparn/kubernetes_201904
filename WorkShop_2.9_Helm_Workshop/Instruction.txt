@@ -30,7 +30,7 @@ Part 1: Deploy grafana via helm:
 1. Add stable repositories from kubernetes-charts:
 		helm repo add stable https://kubernetes-charts.storage.googleapis.com
 
-2. Install wordpress helm by command
+2. Install grafana helm by command
 		helm install --name helmgrafana --set service.type=NodePort stable/grafana
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Example Output:

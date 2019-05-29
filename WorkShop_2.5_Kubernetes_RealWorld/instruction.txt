@@ -132,9 +132,9 @@ kubectl expose deployment webtest --target-port=80 --type=NodePort
 kubectl get svc -o wide
 
 19. (loal) Test get web outside:
-https://x.x.x.x:xxxx
-https://x.x.x.x:xxxx
-https://x.x.x.x:xxxx
+http://x.x.x.x:xxxx
+http://x.x.x.x:xxxx
+http://x.x.x.x:xxxx
 
 20. (Master) Cleanup Lab by command:
 kubectl delete deployment/webtest
